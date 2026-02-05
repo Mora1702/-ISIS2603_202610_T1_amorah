@@ -1,15 +1,15 @@
 # Taller Persistencia
 
-##Asociacion OneToMany/ ManyToOne ( Director - Movie)
+# Asociacion OneToMany/ ManyToOne ( Director - Movie)
 La relacion que utilice entre DirectorEntity y MovieEntity la modele con OneToMany y ManyToOne ya que sabemos que un director es capaz de dirigir multiples peliculas, mientras que cada pelicula solo puede estar dirigida por un unico director. En este c aso se tiene a MovieEntity como el lado que es dueño de la relacion, ya que contiene la clave foranea que referencia al director en la base de datos. De esta forma, se utilizo la anotacion @ManyToOne en MovieEntity, lo que provoca que se cree una colomuna director_id en la tabla de las peliculas. Por otro lado, en DirectorEntity utilice @OneToMany(mappedBy = "director"), lo que indica que esta relacion ya esta mapeada desde la entidad MovieEntity. Al usar mappedby evitamos la creacion de una tabla intermedia que es innecesaria y se mantiene una estructura coherente. Por ultimo, no utlice cascada, ya que eliminar un director que tiene peliculas asociadas no deberia porque ser una accion permitida, pues pone en riesgo la integridad de los datos.
 
-##Asociacion ManyToMany(Movie - Genre)
+# Asociacion ManyToMany(Movie - Genre)
 La asociacion entre MovieEntity y GenreEntity la implemente con ManyToMany ya que una pelicula puede pertenecer a varios generos y, al mismo tiempo un genero puede estar asociado a varias peliculas. Ademas, se tiene que entender que esta relacion no se puede hacer con una sola clave foranea , asi que JPA genera automaticamente una tabla intermedia. En esta relacion, una de las entidades la defini como el lado dueño mediante la anotacion ManyToMany, mientras que en la otra use mappedby para indicar que esta no gestiona directamente la relacion. Asimismo, la tabla intermedia contiene las claves foraneas de ambas entidades, lo que nos permite mantener una relacion de muchos a muchos de forma normalizada. Por ultimo, no utilice cascada debido a que eliminar un genero no nos implica que este deba desaparecer de la base de datos, eus puede estar asociado con otras peliculas.
 
-##Asociacion OneToOne(Movie - Script)
+# Asociacion OneToOne(Movie - Script)
 La relacion hecha entre MovieEntity y ScriptEntity la defini como OneToOne porque cada pelicula tiene un unico guion y cada guion tiene pertenece solamente a una pelicula. Lo anterior nos permite ver una dependencia directa entre ambas entidades. En esta asociacion configure cascada con CascadeType.ALL desde MovieEntity hacia ScriptEntity, lo que significa que cualquier relacion que se haga sobre la pelicula se propaga automaticamente sobre el guion al que este asociado. De igual forma, al eliminar una pelicula, el guion correspondiente tambien se elimina de la base de datos, para que se evite la existencia de scripts sin una pelicula asociada. Adicionalmente a esto, use orphanRemoval =true ya que garantiza que, si el guion deja de ser referenciado por alguna pelicula, este se elimina de forma automatica.
 
-##Asociacion OneToOne(Movie - Script)
+# Asociacion OneToOne(Movie - Script)
 Al intentar eliminar un director que tiene peliculas asociadas sin utilizar cascada, H2 arroja un error por la violacion de integridad referencial, debido a que existen registros que estan en Movie que dependen de ese director. Lo anterior tiene sentido y es deseable ya que se quiere evitar dejar ciertas referencias invalidas y mantener la integridad en la base de datos.
 
 
