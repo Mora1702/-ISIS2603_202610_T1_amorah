@@ -9,7 +9,7 @@ La asociacion entre MovieEntity y GenreEntity la implemente con ManyToMany ya qu
 # Asociacion OneToOne(Movie - Script)
 La relacion hecha entre MovieEntity y ScriptEntity la defini como OneToOne porque cada pelicula tiene un unico guion y cada guion tiene pertenece solamente a una pelicula. Lo anterior nos permite ver una dependencia directa entre ambas entidades. En esta asociacion configure cascada con CascadeType.ALL desde MovieEntity hacia ScriptEntity, lo que significa que cualquier relacion que se haga sobre la pelicula se propaga automaticamente sobre el guion al que este asociado. De igual forma, al eliminar una pelicula, el guion correspondiente tambien se elimina de la base de datos, para que se evite la existencia de scripts sin una pelicula asociada. Adicionalmente a esto, use orphanRemoval =true ya que garantiza que, si el guion deja de ser referenciado por alguna pelicula, este se elimina de forma automatica.
 
-# Asociacion OneToOne(Movie - Script)
+# Prueba de integridad
 Al intentar eliminar un director que tiene peliculas asociadas sin utilizar cascada, H2 arroja un error por la violacion de integridad referencial, debido a que existen registros que estan en Movie que dependen de ese director. Lo anterior tiene sentido y es deseable ya que se quiere evitar dejar ciertas referencias invalidas y mantener la integridad en la base de datos.
 
 
